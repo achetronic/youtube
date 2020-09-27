@@ -1,0 +1,57 @@
+version: "3.5"
+
+
+# Docker Volumes
+volumes:
+    letsencrypt_logs:
+        name: letsencrypt_logs
+    letsencrypt_data:
+        name: letsencrypt_data
+
+
+
+# Docker services
+services:
+    lets-haproxy:
+        image: achetronic/lets-haproxy:latest
+        container_name: lets-haproxy
+        restart: always
+        tty: true
+        stdin_open: true
+        environment:
+            ENVIRONMENT: "staging" # staging | production
+            ADMIN_MAIL: "me@achetronic.com"
+            SKIP_CREATION: "false"
+        volumes:
+            - ./haproxy.cfg:/root/templates/haproxy.user.cfg:ro
+            - letsencrypt_logs:/var/log/letsencrypt
+            - letsencrypt_data:/etc/letsencrypt
+        ports:
+            - "80:80"
+            - "443:443"
+
+    nginx-01:
+        image: nginxdemos/hello
+        container_name: nginx-01
+        restart: always
+        tty: true
+        stdin_open: true
+        expose:
+            - "80"
+
+    nginx-02:
+        image: nginxdemos/hello:plain-text
+        container_name: nginx-02
+        restart: always
+        tty: true
+        stdin_open: true
+        expose:
+            - "80"
+
+
+
+
+
+
+
+            

@@ -1,0 +1,25 @@
+version: "3.5"
+
+
+
+# Docker services
+services:
+
+    nginx-01:
+        image: nginxdemos/hello
+        container_name: nginx-01
+        restart: always
+        tty: true
+        stdin_open: true
+        ports:
+            - "80:80"
+        expose:
+            - "80"
+
+
+
+
+
+
+
+            
