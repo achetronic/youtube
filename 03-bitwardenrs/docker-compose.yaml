@@ -17,13 +17,18 @@ volumes:
 # Docker services
 services:
 
-    # Bitwarden server for raspberry pi
+    # Bitwarden server implemented in Rust
     bitwardenrs:
         image: bitwardenrs/server:latest
         container_name: bitwardenrs
         restart: always
         tty: true
         stdin_open: true
+        environment:
+            # Allow people to register
+            - SIGNUPS_ALLOWED: "false"
+            # Password for accessing /admin (generate it with: openssl rand -base64 48)
+            - ADMIN_TOKEN: "some_random_token_as_per_above_explanation" 
         volumes:
             - bitwardenrs_data:/data/
         ports:
