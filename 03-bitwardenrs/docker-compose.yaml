@@ -26,9 +26,9 @@ services:
         stdin_open: true
         environment:
             # Allow people to register
-            - SIGNUPS_ALLOWED: "false"
+            SIGNUPS_ALLOWED: "false"
             # Password for accessing /admin (generate it with: openssl rand -base64 48)
-            - ADMIN_TOKEN: "some_random_token_as_per_above_explanation" 
+            ADMIN_TOKEN: "some_random_token_as_per_above_explanation" 
         volumes:
             - bitwardenrs_data:/data/
         ports:
