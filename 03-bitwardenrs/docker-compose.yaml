@@ -1,21 +1,35 @@
 version: "3.5"
 
-#Docker Networks
-networks:
-    internal:
-        driver: bridge
-        name: internal
-    external:
-        driver: bridge
-        name: external
-
 # Docker Volumes
 volumes:
+    letsencrypt_logs:
+        name: letsencrypt_logs
+    letsencrypt_data:
+        name: letsencrypt_data
     bitwardenrs_data:
         name: bitwardenrs_data
 
 # Docker services
 services:
+
+    # Reverse proxy in the frontline
+    lets-haproxy:
+        image: achetronic/lets-haproxy:latest
+        container_name: lets-haproxy
+        restart: always
+        tty: true
+        stdin_open: true
+        environment:
+            ENVIRONMENT: "staging" # staging | production
+            ADMIN_MAIL: "me@achetronic.com"
+            SKIP_CREATION: "false"
+        volumes:
+            - ./haproxy.cfg:/root/templates/haproxy.user.cfg:ro
+            - letsencrypt_logs:/var/log/letsencrypt
+            - letsencrypt_data:/etc/letsencrypt
+        ports:
+            - "80:80"
+            - "443:443"
 
     # Bitwarden server implemented in Rust
     bitwardenrs:
@@ -31,8 +45,5 @@ services:
             ADMIN_TOKEN: "some_random_token_as_per_above_explanation" 
         volumes:
             - bitwardenrs_data:/data/
-        ports:
-            - "80:80"
-        networks:
-            - internal
-            - external
+        expose:
+            - "80"
