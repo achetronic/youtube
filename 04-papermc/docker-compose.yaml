@@ -16,6 +16,7 @@ services:
             VERSION: 1.16.2
             # needed for Paper versions before 1.14
             CONSOLE: "false"
+            ONLINE_MODE: "false"
 
         container_name: papermc
         restart: always
