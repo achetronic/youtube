@@ -1,0 +1,28 @@
+version: "3.5"
+
+# Docker Volumes
+volumes:
+    papermc_data:
+        name: papermc_data
+
+# Docker services
+services:
+    # Paper MC
+    papermc:
+        image: itzg/minecraft-server
+        environment:
+            EULA: "true"
+            TYPE: PAPER
+            VERSION: 1.16.2
+            # needed for Paper versions before 1.14
+            CONSOLE: "false"
+
+        container_name: papermc
+        restart: always
+        tty: true
+        stdin_open: true
+        volumes:
+            - papermc_data:/data
+            
+        ports:
+            - "25565:25565"
