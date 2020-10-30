@@ -1,0 +1,25 @@
+version: "3.5"
+
+# Docker services
+services:
+
+    rabbitmq:
+        image: rabbitmq:3.8.9-management
+        container_name: rabbitmq
+        restart: always
+        tty: true
+        stdin_open: true
+        volumes:
+            - ./enable_plugins:/etc/rabbitmq/enabled_plugins:ro
+            # More plugins on:
+            # https://www.rabbitmq.com/plugins.html
+            # https://www.rabbitmq.com/community-plugins.html
+        ports:
+            # HTTP DASHBOARD FOR MANAGEMENT
+            - "15672:15672"
+            # AMQP PROTOCOL
+            - "5672:5672"
+            # MQTT PROTOCOL
+            #- "1883:1883"
+            # MQTT OVER WEBSOCKETS
+            #- "15675:15675"
