@@ -35,8 +35,8 @@ Optionally, configure RabbitMQ to connect using mutual TLS authentication (mTLS)
 Obtain user and password
 
 ```
-kubectl -n default get secret rabbitmqcluster-rabbitmq-default-user -o jsonpath="{.data.username}" | base64 --decode
-kubectl -n default get secret rabbitmqcluster-rabbitmq-default-user -o jsonpath="{.data.password}" | base64 --decode
+kubectl -n default get secret rabbitmqcluster-default-user -o jsonpath="{.data.username}" | base64 --decode | cowsay
+kubectl -n default get secret rabbitmqcluster-default-user -o jsonpath="{.data.password}" | base64 --decode | cowsay
 ```
 
 

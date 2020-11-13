@@ -5,9 +5,9 @@ metadata:
   name: rabbitmqcluster
 spec:
   image: rabbitmq:3.8.9-management
-  replicas: 1
+  replicas: 3
   service:
-    type: LoadBalancer # NodePort | ClusterIP | LoadBalancer
+    type: LoadBalancer # ClusterIP | LoadBalancer
   resources:
     requests:
       # cpu: 3000m
@@ -17,7 +17,6 @@ spec:
     #   memory: 2Gi
   rabbitmq:
     additionalPlugins:
-      - rabbitmq_mqtt
       - rabbitmq_top
       - rabbitmq_shovel
   # tls:
