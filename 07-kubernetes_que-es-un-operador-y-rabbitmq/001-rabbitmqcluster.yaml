@@ -1,0 +1,26 @@
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmqcluster
+spec:
+  image: rabbitmq:3.8.9-management
+  replicas: 1
+  service:
+    type: LoadBalancer # NodePort | ClusterIP | LoadBalancer
+  resources:
+    requests:
+      # cpu: 3000m
+      memory: 512Mi
+    # limits:
+    #   cpu: 1000m
+    #   memory: 2Gi
+  rabbitmq:
+    additionalPlugins:
+      - rabbitmq_mqtt
+      - rabbitmq_top
+      - rabbitmq_shovel
+  # tls:
+  #   secretName: rabbitmq-server-certs
+  #   caSecretName: rabbitmq-ca-cert
+  #   caCertName: ca.crt
