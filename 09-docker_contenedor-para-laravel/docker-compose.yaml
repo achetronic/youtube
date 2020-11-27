@@ -1,0 +1,111 @@
+version: "3.5"
+
+
+
+#Docker Networks
+networks:
+    internal:
+        driver: bridge
+        name: internal
+    external:
+        driver: bridge
+        name: external
+    
+
+
+# Docker Volumes
+volumes:
+    backend:
+        name: backend
+
+
+
+# Docker services     
+services:
+
+    # Laravel container (backend)
+    backend:
+        build:
+            context: ./build/backend
+            dockerfile: Dockerfile
+        image: backend:laravel
+        container_name: backend
+        restart: always
+        tty: true
+        stdin_open: true
+        environment:
+            APP_VENDOR: "Achetronic"
+            APP_NAME: "Laravel"
+            APP_ENV: local
+            APP_KEY: "base64:ejHnK9FbRXrtLw85zkQ9Eo7DiyQyJfVSge20qX+rQ8s="
+            APP_DEBUG: "false"
+            APP_URL: https://your-site.com
+            LOG_CHANNEL: stack
+
+            ###### MYSQL ######
+            DB_CONNECTION: mysql
+            DB_HOST: database
+            DB_PORT: 3306
+            DB_DATABASE: "your-database"
+            DB_USERNAME: "your-user"
+            DB_PASSWORD: "your-password"
+
+            ###### EXTRA ######
+            BROADCAST_DRIVER: log
+            CACHE_DRIVER: file
+            QUEUE_CONNECTION: sync
+            SESSION_DRIVER: file
+            SESSION_LIFETIME: 120
+
+            ###### REDIS ######
+            REDIS_HOST: cache
+            REDIS_PASSWORD: null
+            REDIS_PORT: 6379
+
+            ###### SENDGRID ######
+            MAIL_DRIVER: smtp
+            MAIL_HOST: smtp.sendgrid.net
+            MAIL_PORT: 587
+            MAIL_USERNAME: apikey
+            MAIL_PASSWORD: "SG.7U4aAIFjSEiqdRjs-a0pug.r3IJ_DsdfdsfLK0S978546ds67f9ds79fds7Ndsfdsc8GF8e29K34cfv_5Os_your-key"
+            MAIL_ENCRYPTION: tls
+            MAIL_FROM_NAME: "${APP_NAME}"
+            MAIL_FROM_ADDRESS: "noreply@your-site.com"
+
+        working_dir: /var/www
+        volumes:
+            - type: volume
+              source: backend
+              target: /var/www
+        expose: 
+            - "9000"
+        networks: 
+            - internal
+
+    # Nginx (frontend)
+    frontend:
+        build:
+            context: ./build/frontend
+            dockerfile: Dockerfile
+        image: frontend:nginx
+        container_name: frontend
+        depends_on:
+            - backend
+        restart: always
+        tty: true
+        stdin_open: true
+        working_dir: /var/www
+        volumes:
+            - type: volume
+              source: backend
+              target: /var/www
+              volume:
+                nocopy: true
+                read_only: true
+        ports:
+            - "80:80"
+            - "443:443"
+        networks:
+            - internal
+            - external
+
