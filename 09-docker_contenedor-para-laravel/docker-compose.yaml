@@ -99,9 +99,9 @@ services:
             - type: volume
               source: backend
               target: /var/www
+              read_only: true
               volume:
                 nocopy: true
-                read_only: true
         ports:
             - "80:80"
             - "443:443"
