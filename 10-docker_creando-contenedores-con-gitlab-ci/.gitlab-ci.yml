@@ -1,0 +1,23 @@
+image: docker:latest
+services:
+- docker:dind
+
+stages:
+- buildAndPush
+
+before_script:
+  - export TAG=${CI_COMMIT_SHORT_SHA}-${CI_JOB_ID}
+  - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 
+
+build:
+  stage: buildAndPush
+  script:
+    # Build and push the real image
+    - docker build -t $CI_REGISTRY/${CI_PROJECT_PATH}:$TAG .
+    - docker push $CI_REGISTRY/${CI_PROJECT_PATH}:$TAG
+
+    # Retag and push the image to have a latest tag
+    - docker tag $CI_REGISTRY/${CI_PROJECT_PATH}:$TAG $CI_REGISTRY/${CI_PROJECT_PATH}:latest
+    - docker push $CI_REGISTRY/${CI_PROJECT_PATH}:latest
+  only:
+    - master
