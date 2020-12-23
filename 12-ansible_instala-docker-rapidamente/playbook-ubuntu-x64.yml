@@ -1,0 +1,52 @@
+---
+- name: Installing Docker and Docker Compose on Ubuntu x64
+  #connection: ansible.netcommon.network_cli
+  gather_facts: false
+  hosts: test
+  tasks:
+
+    - name: Removing old versions
+      shell:
+        cmd: sudo apt-get remove docker docker-engine docker.io containerd runc
+        warn: False
+
+    - name: Updating the repositories
+      shell:
+        cmd: sudo apt-get update
+        warn: False
+
+    - name: Installing needed packages for using HTTPS on the repositories
+      shell:
+        cmd: sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+        warn: False
+
+    - name: Adding GPG key for Docker repository
+      shell:
+        cmd: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        warn: False
+
+    - name: Adding Docker repository
+      shell:
+        cmd: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        warn: False
+
+    - name: Updating the repositories
+      shell:
+        cmd: sudo apt-get update
+        warn: False
+
+    - name: Installing Docker
+      shell:
+        cmd: sudo apt-get install docker-ce docker-ce-cli containerd.io
+        warn: False
+
+    - name: Downloading Docker Compose
+      shell:
+        cmd: sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        warn: False
+
+    - name: Changing permissions to Docker Compose
+      shell:
+        cmd: sudo chmod +x /usr/local/bin/docker-compose | ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+        warn: False
+
