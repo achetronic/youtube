@@ -5,20 +5,28 @@
   hosts: test
   tasks:
 
-    - name: Removing old versions
-      shell:
-        cmd: sudo apt-get remove docker docker-engine docker.io containerd runc
-        warn: False
+    # - name: Removing old versions
+    #   shell:
+    #     cmd: sudo apt-get -y remove docker docker-engine docker.io containerd runc
+    #     warn: False
+    #
+    # - name: Updating the repositories
+    #   shell:
+    #     cmd: sudo apt-get update
+    #     warn: False
+    #
+    # - name: Installing needed packages for using HTTPS on the repositories
+    #   shell:
+    #     cmd: sudo apt-get -y install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    #     warn: False
 
-    - name: Updating the repositories
-      shell:
-        cmd: sudo apt-get update
-        warn: False
+    - name: Removing old versions
+      apt: name={{ item }} update_cache=yes state=absent
+      loop: [ 'docker', 'docker-engine', 'docker.io', 'containerd', 'runc' ]
 
     - name: Installing needed packages for using HTTPS on the repositories
-      shell:
-        cmd: sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-        warn: False
+      apt: name={{ item }} update_cache=yes state=latest
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'gnupg-agent', 'software-properties-common' ]
 
     - name: Adding GPG key for Docker repository
       shell:
@@ -30,15 +38,19 @@
         cmd: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
         warn: False
 
-    - name: Updating the repositories
-      shell:
-        cmd: sudo apt-get update
-        warn: False
+    # - name: Updating the repositories
+    #   shell:
+    #     cmd: sudo apt-get update
+    #     warn: False
+
+    # - name: Installing Docker
+    #   shell:
+    #     cmd: sudo apt-get -y install docker-ce docker-ce-cli containerd.io
+    #     warn: False
 
     - name: Installing Docker
-      shell:
-        cmd: sudo apt-get install docker-ce docker-ce-cli containerd.io
-        warn: False
+      apt: name={{ item }} update_cache=yes state=latest
+      loop: [ 'docker-ce', 'docker-ce-cli', 'containerd.io' ]
 
     - name: Downloading Docker Compose
       shell:
