@@ -57,8 +57,19 @@
         cmd: sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         warn: False
 
+    # - name: Changing permissions to Docker Compose
+    #   shell:
+    #     cmd: sudo chmod +x /usr/local/bin/docker-compose | ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    #     warn: False
+
     - name: Changing permissions to Docker Compose
-      shell:
-        cmd: sudo chmod +x /usr/local/bin/docker-compose | ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-        warn: False
+      file:
+        path: /usr/local/bin/docker-compose
+        mode: a+x
+
+    - name: Create a symbolic link for Docker Compose
+      file:
+        src: /usr/local/bin/docker-compose
+        dest: /usr/bin/docker-compose
+        state: link
 
