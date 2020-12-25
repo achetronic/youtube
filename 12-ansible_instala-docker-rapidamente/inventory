@@ -3,6 +3,11 @@ server1 ansible_host=xxx.xxx.xxx.xxx
 
 [test:vars]
 ansible_python_interpreter=/usr/bin/python3
+
+# Access SSH with a private key file config: for AWS, DigitalOcean, etc
+# ansible_ssh_private_key_file=/home/example/.ssh/aws.pem
+
+# Access SSH with user and password, i.e: Bare-metal
 ansible_connection=ssh 
 ansible_user=root 
 ansible_ssh_pass=XXXXXXXX
