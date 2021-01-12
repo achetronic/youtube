@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-deployment
+  namespace: default
+  labels:
+    app: hello
+spec:
+  selector:
+    matchLabels:
+      app: hello
+
+  replicas: 3
+
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      # volumes:
+      # - name: app-logs
+      #   emptyDir: {}
+
+      restartPolicy: Always
+
+      containers:
+      # Create a container with a "Hello World" for Kubernetes
+      - name: hello-container
+        image: paulbouwer/hello-kubernetes:1.8
+        imagePullPolicy: Always
+        stdin: true 
+        tty: true
+
+        # livenessProbe:
+        #   exec:
+        #     command:
+        #     - /app/runtime/livenessprobe.sh
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 15
+
+        # livenessProbe:
+        #   httpGet:
+        #    path: /healthz
+        #    port: 5000
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 2
+        #   periodSeconds: 10
+        #   failureThreshold: 3
+
+
+        # volumeMounts:
+        # - name: app-logs
+        #   mountPath: /logs
+        #   subPath: logs
+
+        
+        # env:
+        #   # Application configuration
+        #   - name: APP_NAME
+        #     valueFrom:
+        #       configMapKeyRef:
+        #         name: hello-config
+        #         key: APP_NAME
+
+              
+
