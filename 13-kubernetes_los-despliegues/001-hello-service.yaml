@@ -6,8 +6,8 @@ metadata:
   namespace: default
   labels:
     app: hello
+
 spec:
-  # ClusterIP | NodePort | LoadBalancer
   type: ClusterIP 
   ports:
     - name: http

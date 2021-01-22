@@ -1,5 +1,5 @@
 [test]
-server1 ansible_host=93.189.91.225
+server1 ansible_host=161.22.40.200
 
 [test:vars]
 ansible_python_interpreter=/usr/bin/python3
@@ -10,4 +10,4 @@ ansible_python_interpreter=/usr/bin/python3
 # Access SSH with user and password, i.e: Bare-metal
 ansible_connection=ssh 
 ansible_user=root 
-ansible_ssh_pass=bP7yRjqn1flfpsNS
+ansible_ssh_pass=N9Vw8bpJFsrpcHaF
