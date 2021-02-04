@@ -5,6 +5,7 @@ services:
     container_name: keycloak
     ports:
       - 8080:8080
+      - 8443:8443
     restart: unless-stopped
     environment:
       # Credentials for admin account
