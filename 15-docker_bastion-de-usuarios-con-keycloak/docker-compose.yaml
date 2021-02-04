@@ -1,0 +1,22 @@
+version: '3'
+services:
+  keycloack:
+    image: quay.io/keycloak/keycloak:12.0.2
+    container_name: keycloak
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    environment:
+      # Credentials for admin account
+      # -----------------------------
+      KEYCLOAK_USER: "admin"
+      KEYCLOAK_PASSWORD: "admin"
+
+      # Credentials for storing into an external database
+      # -------------------------------------------------
+      # DB_VENDOR: "mysql"
+      # DB_ADDR: 
+      # DB_PORT:
+      # DB_DATABASE: 
+      # DB_USER:
+      # DB_PASSWORD: 
