@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - rbac/000-prometheus.yaml
+  - rbac/001-prometheus-cluster-role.yaml
+  - rbac/002-prometheus-cluster-role-binding.yaml
+  - rbac/003-prometheus-service-account.yaml
+  - 000-example-app-deployment.yaml
+  - 001-example-app-service.yaml
+  - 002-example-app-service-monitor.yaml
+  - 003-prometheus-service-monitor.yaml
+  - 004-prometheus-service.yaml
