@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-app-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-app-2
+  template:
+    metadata:
+      labels:
+        app: example-app-2
+    spec:
+      containers:
+      - name: example-app-2
+        image: fabxc/instrumented_app
+        ports:
+        - name: web
+          containerPort: 8080
