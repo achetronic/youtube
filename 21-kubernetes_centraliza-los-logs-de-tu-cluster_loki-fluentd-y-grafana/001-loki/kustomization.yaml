@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - 000-loki-namespace.yaml
+  - 000-loki-local-config-yaml.yaml
+  - 003-loki-service.yaml
+  - 005-loki-persistentvolumeclaim.yaml
+  - 004-loki-deployment.yaml
