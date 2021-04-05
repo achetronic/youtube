@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-service
+  namespace: kube-logging
+  labels:
+    app: loki
+spec:
+  # ClusterIP | LoadBalancer
+  type: ClusterIP 
+  ports:
+    - name: loki
+      protocol: TCP
+      port: 3100
+      targetPort: 3100
+  selector:
+      app: loki

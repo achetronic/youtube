@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: loki-deployment
+  namespace: kube-logging
+  labels:
+    app: loki
+
+spec:
+  selector:
+    matchLabels:
+      app: loki
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: loki
+    spec:
+      volumes:
+        - name: loki-local-config-yaml
+          configMap:
+            name: loki-local-config-yaml
+        - name: loki-data
+          persistentVolumeClaim:
+            claimName: loki-pv-claim
+      restartPolicy: Always
+      containers:
+
+      # Create a container with the Grafana Loki
+      - name: loki-container
+        image: grafana/loki:latest
+        imagePullPolicy: Always
+        args: ["-config.file=/etc/loki/local-config.yaml"]
+        stdin: true 
+        tty: true
+        ports:
+          - containerPort: 3100
+        volumeMounts:
+        - name: loki-data
+          mountPath: /tmp/loki
+
+              
+

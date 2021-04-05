@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-deployment
+  namespace: default
+  labels:
+    app: grafana
+spec:
+  selector:
+    matchLabels:
+      app: grafana
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+
+      # Create a container with the RabbitMQ
+      - name: grafana-container
+        image: grafana/grafana:latest
+        imagePullPolicy: Always
+        stdin: true 
+        tty: true
+        # env:
+        #   - name: grafana_DEFAULT_SERVER
+        #     valueFrom:
+        #       configMapKeyRef:
+        #         name: grafana-config
+        #         key: grafana_DEFAULT_SERVER
+        #   - name: APP_KEY
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: queue2db-secrets
+        #         key: APP_KEY
+
+              
+

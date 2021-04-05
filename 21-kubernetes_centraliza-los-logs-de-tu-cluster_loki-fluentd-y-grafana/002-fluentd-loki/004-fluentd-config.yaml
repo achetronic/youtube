@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-config
+  namespace: kube-logging
+  labels:
+    app: fluentd
+data: 
+  fluent.conf: |
+    <source>
+      @type tail
+      path /var/log/*.log
+      pos_file /var/log/fluentd/tmp/access.log.pos
+      tag foo.*
+
+      <parse>
+        @type json
+      </parse>
+    </source>
+
+    <source>
+      @type tail
+      @id in_tail_container_logs
+      path /var/log/containers/*.log
+      pos_file /var/log/fluentd-containers.log.pos
+      tag kubernetes.*
+      read_from_head true
+      <parse>
+        @type json
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+      </parse>
+    </source>
+
+    <match fluentd.**>
+      @type null
+    </match>
+
+    <match kubernetes.var.log.containers.**fluentd**.log>
+      @type null
+    </match>
+
+    <filter kubernetes.**>
+      @type kubernetes_metadata
+      @id filter_kube_metadata
+    </filter>
+
+    <filter kubernetes.var.log.containers.**>
+      @type record_transformer
+      enable_ruby
+      remove_keys kubernetes, docker
+
+      <record>
+        app ${ record.dig("kubernetes", "labels", "app") }
+        job ${ record.dig("kubernetes", "labels", "app") }
+        namespace ${ record.dig("kubernetes", "namespace_name") }
+        pod ${ record.dig("kubernetes", "pod_name") }
+        container ${ record.dig("kubernetes", "container_name") }
+      </record>
+    </filter>
+    
+    <match kubernetes.var.log.containers.**>
+      @type copy
+
+      <store>
+        @type loki
+        url "http://loki-service.kube-logging.svc.cluster.local:3100"
+        # extra_labels {"env":"dev"}
+        label_keys "app,job,namespace,pod,container"
+        flush_interval 10s
+        flush_at_shutdown true
+        buffer_chunk_limit 1m
+      </store>
+
+      <store>
+        @type stdout
+      </store>
+    </match>
