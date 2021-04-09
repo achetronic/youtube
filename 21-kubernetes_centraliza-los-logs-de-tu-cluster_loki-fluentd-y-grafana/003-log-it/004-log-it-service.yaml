@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: log-it-service
+  namespace: default
+  labels:
+    app: log-it
+spec:
+  # ClusterIP | LoadBalancer
+  type: ClusterIP 
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+      app: log-it

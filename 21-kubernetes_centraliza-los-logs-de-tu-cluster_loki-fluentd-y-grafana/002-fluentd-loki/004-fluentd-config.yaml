@@ -22,13 +22,29 @@ data:
       @type tail
       @id in_tail_container_logs
       path /var/log/containers/*.log
+      exclude_path ["/var/log/containers/fluentd*"]
       pos_file /var/log/fluentd-containers.log.pos
       tag kubernetes.*
       read_from_head true
+
+      # ATTENTION: THE FOLLOWING DEPENDS ON THE KUBERNETES VERSION
+      # https://github.com/fluent/fluent-plugin-parser-cri#log-and-configuration-example
+
+      # <parse>
+      #   @type cri
+      #   merge_cri_fields false
+      #   <parse>
+      #     @type json
+      #     time_key time
+      #     time_format %Y-%m-%dT%H:%M:%S.%L%z
+      #   </parse>
+      # </parse>
+
       <parse>
-        @type json
-        time_format %Y-%m-%dT%H:%M:%S.%NZ
+        @type cri
+        time_format %Y-%m-%dT%H:%M:%S.%L%z
       </parse>
+
     </source>
 
     <match fluentd.**>

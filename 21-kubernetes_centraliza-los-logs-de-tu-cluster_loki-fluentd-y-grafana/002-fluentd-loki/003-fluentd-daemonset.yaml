@@ -34,16 +34,8 @@ spec:
           - '-c'
           - >
             fluent-gem i fluent-plugin-grafana-loki-licence-fix ;
+            fluent-gem i fluent-plugin-parser-cri --no-document ;
             tini /fluentd/entrypoint.sh;
-        # env:
-        #   - name:  FLUENT_ELASTICSEARCH_HOST
-        #     value: "elasticsearch.kube-logging.svc.cluster.local"
-        #   - name:  FLUENT_ELASTICSEARCH_PORT
-        #     value: "9200"
-        #   - name: FLUENT_ELASTICSEARCH_SCHEME
-        #     value: "http"
-        #   - name: FLUENTD_SYSTEMD_CONF
-        #     value: disable
         resources:
           limits:
             memory: 512Mi
