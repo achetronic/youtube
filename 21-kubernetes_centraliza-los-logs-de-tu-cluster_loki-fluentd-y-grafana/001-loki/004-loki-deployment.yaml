@@ -19,9 +19,9 @@ spec:
         app: loki
     spec:
       volumes:
-        - name: loki-local-config-yaml
+        - name: loki-config-yaml
           configMap:
-            name: loki-local-config-yaml
+            name: loki-config-yaml
         - name: loki-data
           persistentVolumeClaim:
             claimName: loki-pv-claim

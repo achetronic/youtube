@@ -1,0 +1,15 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: log-it-config
+  namespace: default
+data:
+  # Application data
+  APP_NAME: "log-it"
+  APP_ENV: "local"
+
+  # ReactPHP data
+  REACTPHP_IP: "0.0.0.0"
+  REACTPHP_PORT: "80"
+

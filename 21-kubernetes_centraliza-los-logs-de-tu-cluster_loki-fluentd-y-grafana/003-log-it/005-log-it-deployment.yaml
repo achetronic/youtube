@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-it-deployment
+  namespace: default
+  labels:
+    app: log-it
+spec:
+  selector:
+    matchLabels:
+      app: log-it
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: log-it
+    spec:
+      restartPolicy: Always
+      containers:
+
+      # Create a container with the log-it
+      - name: log-it-container
+        image: registry.gitlab.com/achetronic/log-it:latest
+        imagePullPolicy: Always
+        command: 
+          - /bin/sh 
+        stdin: true 
+        tty: true
+
+       
+              
+
