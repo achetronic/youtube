@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: application-a
+  name: developer
+rules:
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["get", "watch", "list", "describe"]
+
+- apiGroups: [""]
+  resources: ["deployments"]
+  verbs: ["get", "watch", "list", "describe"]
+
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list", "describe", "exec", "attach", "logs"]
