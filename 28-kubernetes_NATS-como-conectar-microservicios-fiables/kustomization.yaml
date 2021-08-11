@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: nats-io
+
+resources:
+- namespace.yaml
+- https://github.com/nats-io/nats-operator/releases/latest/download/00-prereqs.yaml
+- https://github.com/nats-io/nats-operator/releases/latest/download/10-deployment.yaml
+
+patchesJson6902:
+  - path: overlays/deploymentCluster.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: nats-operator
