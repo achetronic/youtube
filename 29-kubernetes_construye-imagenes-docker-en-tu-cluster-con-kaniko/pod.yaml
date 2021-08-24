@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kaniko
+spec:
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:latest
+    args: [
+      "--context=git://github.com/achetronic/lets-haproxy.git",
+      "--dockerfile=Dockerfile",
+      "--destination=achetronic/test-kaniko",
+      #"--no-push"
+    ]
+    volumeMounts:
+      - name: kaniko-secret
+        mountPath: /root
+    env:
+      - name: DOCKER_CONFIG
+        value: /root/.docker/
+  restartPolicy: Never
+  volumes:
+  - name: kaniko-secret
+    secret:
+      secretName: docker-hub
+      items:
+      - key: .dockerconfigjson
+        path: .docker/config.json
