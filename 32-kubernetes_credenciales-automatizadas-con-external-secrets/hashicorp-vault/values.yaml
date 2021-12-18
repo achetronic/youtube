@@ -1,0 +1,17 @@
+# Agent that is able to inject credentials by volumes or env vars
+# Disabled to be Kubernetes Secret pattern compilant
+injector:
+  enabled: false
+
+# Enable development mode to set the Vault token to "root"
+# This is obviously not recommended on production, just to test
+server:
+  dev:
+    enabled: true
+
+    # Set VAULT_DEV_ROOT_TOKEN_ID value
+    devRootToken: "root"
+
+    # Enables debug logging.
+    debug: false
+
