@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Deploy the Replika Operator
+  - https://github.com/prosimcorp/replika//deploy/?ref=main
+
+  # Uncomment following lines if you desire to be able to
+  # replicate all kind of resources
+  - clusterRole-replika-custom-resources.yaml
+  - clusterRoleBinding-replika-custom-resources.yaml
+
+  # Deploy sample resources
+  - configMap-sample-configmap.yaml
+  - replika-sample-configmap.yaml
