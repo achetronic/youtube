@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - serviceAccount-external-dns.yaml
+  - configMap-cluster-info.yaml
+  - patch-external-dns-sa.yaml

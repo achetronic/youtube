@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-info
+data:
+ account: "111111111111"
+ environment: develop
+ name: your-project-emea
+ provider: AWS
+ region: eu-west-1
