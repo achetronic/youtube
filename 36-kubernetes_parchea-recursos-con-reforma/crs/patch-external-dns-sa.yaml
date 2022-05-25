@@ -1,0 +1,39 @@
+apiVersion: reforma.prosimcorp.com/v1alpha1
+kind: Patch
+metadata:
+  name: external-dns-sa
+spec:
+  # Synchronization parameters
+  synchronization:
+    time: "5s"
+
+  # Sources to look for the data to make wonderful patches
+  sources:
+  - apiVersion: v1
+    kind: ConfigMap
+    name: cluster-info
+    namespace: default
+
+  # Target to apply patches to
+  target:
+    apiVersion: v1
+    kind: ServiceAccount
+    name: external-dns
+    namespace: default
+
+  # You know, the patch type
+  patchType: application/merge-patch+json
+
+  # Templating section is where you can be creative to craft a patch
+  # Basically, if you know Helm templating and Kustomize patches, do what you want
+  template: |
+   {{- $source := (index . 1) -}}
+   metadata:
+     annotations:
+       {{- if eq ($source.data.provider | lower) "aws" }}
+       eks.amazonaws.com/role-arn: "arn:aws:iam::{{- $source.data.account -}}:role/{{- $source.data.name -}}-external-dns"
+       {{- end }}
+
+       {{- if eq ($source.data.provider | lower) "gcp" }}
+       iam.gke.io/gcp-service-account: "{{- $source.data.name -}}-external-dns@{{- $source.data.account -}}.iam.gserviceaccount.com"
+       {{ end }}

@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: reforma
+
+resources:
+  # Deploy the Replika Operator
+  - https://github.com/prosimcorp/reforma//deploy/?ref=v0.1.0
+
+  # Uncomment following lines if you desire to be able to
+  # patch all kind of resources
+  - clusterRole-reforma-custom-resources.yaml
+  - clusterRoleBinding-reforma-custom-resources.yaml
