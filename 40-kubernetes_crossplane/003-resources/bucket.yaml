@@ -1,0 +1,15 @@
+apiVersion: s3.aws.crossplane.io/v1beta1
+kind: Bucket
+metadata:
+  name: madnesscorp-amazing-app
+spec:
+  deletionPolicy: Orphan
+  providerConfigRef:
+    name: aws-config
+  forProvider:
+    acl: private
+    locationConstraint: us-east-1
+    tagging:
+      tagSet:
+        - key: CreatedBy
+          value: Crossplane
