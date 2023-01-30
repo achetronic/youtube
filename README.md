@@ -1,6 +1,6 @@
 # Youtube
 
-The things you saw on my [YT](youtube.com/@achetronic) channel. 
+The things you saw on my [YT](https://youtube.com/@achetronic) channel. 
 You will find a bunch of things to help newcomers to follow my videos
 
 ## Index
