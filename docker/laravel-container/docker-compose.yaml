@@ -26,8 +26,8 @@ services:
     # Laravel container (backend)
     backend:
         build:
-            context: ./build/backend
-            dockerfile: Dockerfile
+            context: build/backend
+            dockerfile: build/backend/Dockerfile
         image: backend:laravel
         container_name: backend
         restart: always
@@ -85,8 +85,8 @@ services:
     # Nginx (frontend)
     frontend:
         build:
-            context: ./build/frontend
-            dockerfile: Dockerfile
+            context: build/frontend
+            dockerfile: build/frontend/Dockerfile
         image: frontend:nginx
         container_name: frontend
         depends_on:
