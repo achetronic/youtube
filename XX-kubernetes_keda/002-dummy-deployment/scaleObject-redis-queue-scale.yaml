@@ -1,0 +1,33 @@
+# Ref: https://keda.sh/docs/2.9/concepts/scaling-deployments/
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: redis-queue-scale
+spec:
+  scaleTargetRef:
+    name: "dummy-deployment"
+  pollingInterval:  30
+  cooldownPeriod:   300
+  idleReplicaCount: 0
+  minReplicaCount:  1
+  maxReplicaCount:  100
+  fallback:
+    failureThreshold: 3
+    replicas: 6
+  advanced:
+    restoreToOriginalReplicaCount: false
+  # Ref: https://keda.sh/docs/2.9/scalers/
+  triggers:
+
+    # Ref: https://keda.sh/docs/2.9/scalers/redis-lists/
+    - type: redis
+      metadata:
+        address: redis-master.application.svc:6379
+        # Ref: https://redis.io/docs/data-types/lists/
+        listName: mylist
+        listLength: "3"
+        activationListLength: "3"
+        enableTLS: "false"
+        databaseIndex: "0"
+      authenticationRef:
+        name: redis-queue-scale
