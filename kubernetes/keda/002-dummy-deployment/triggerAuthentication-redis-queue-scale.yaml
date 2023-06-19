@@ -1,0 +1,9 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: redis-queue-scale
+spec:
+  secretTargetRef:
+    - parameter: password
+      name: redis
+      key: redis-password
