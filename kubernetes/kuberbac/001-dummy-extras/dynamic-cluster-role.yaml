@@ -1,0 +1,59 @@
+apiVersion: kuberbac.prosimcorp.com/v1alpha1
+kind: DynamicClusterRole
+metadata:
+  name: example-policy
+spec:
+  # Synchronization parameters
+  synchronization:
+    time: "30s"
+
+  # Desired name for produced ClusterRole
+  target:
+    name: example-policy
+    annotations: {}
+    labels: {}
+
+    # This flag create two separated ClusterRoles:
+    # one for cluster-wide resources and another for namespace-scoped resources
+    separateScopes: true
+
+  # This is where the allowed policies are expressed
+  # Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+  allow:
+    # Allow everything to remove permissions or resources later
+    # Of course, you can be much more specific. This is just an example
+    - apiGroups: [ "*" ]
+      resources: [ "*" ]
+      verbs: [ "*" ]
+
+  # This is where the denied policies are expressed
+  # Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+  deny:
+    # Deny access to resources related to this wonderful RBAC
+    # You can use typical wildcards. They will be expanded by Kuberbac
+    - apiGroups:
+        - "*"
+      resources:
+        - "dynamicclusterroles"
+        - "dynamicrolebindings"
+      verbs:
+        - "*"
+
+    # Deny access to resources related to core RBAC
+    - apiGroups:
+        - "*"
+      resources:
+        - "clusterroles"
+        - "clusterrolebindings"
+        - "serviceaccounts"
+      verbs:
+        - "*"
+
+    # Deny access to secrets
+    - apiGroups: [ "*" ]
+      resources: [ "secrets" ]
+      verbs: [ "*" ]
+
+    - apiGroups: [ "" ]
+      resources: [ "pods/exec", "pods/attach" ]
+      verbs: [ "*" ]

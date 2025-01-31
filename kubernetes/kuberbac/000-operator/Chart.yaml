@@ -1,0 +1,10 @@
+apiVersion: v2
+name: meta-kuberbac
+description: A Helm chart for deploying KubeRBAC on Kubernetes
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: kuberbac
+    version: 0.4.3
+    repository: https://prosimcorp.github.io/helm-charts/

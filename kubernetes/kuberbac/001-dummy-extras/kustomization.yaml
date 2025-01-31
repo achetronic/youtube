@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: kuberbac
+
+resources:
+  - dynamic-cluster-role.yaml
+  - dynamic-role-binding-cluster.yaml
+  - dynamic-role-binding-namespaced.yaml

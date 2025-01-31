@@ -1,0 +1,48 @@
+apiVersion: kuberbac.prosimcorp.com/v1alpha1
+kind: DynamicRoleBinding
+metadata:
+  name: example-role-binding-cluster
+spec:
+
+  synchronization:
+    time: "10s"
+
+  # This is the section to enrol members to your existing role
+  source:
+    clusterRole: example-policy-cluster
+
+    subject:
+      # Members can be of type User. These members only exists outside your cluster
+      # so they can be ONLY matched by exact names
+
+      apiGroup: rbac.authorization.k8s.io
+      kind: User
+      nameSelector:
+        matchList:
+          - developer
+
+  # This is the section to define the target namespaces where the role-bindings will be created
+  # For those members selected in the previous section
+  targets:
+
+    # (Required)
+    # Name of the RoleBinding objects to be created
+    name: example-policy-cluster
+
+    # Add some metadata to the RoleBinding objects
+    annotations: {}
+    labels: {}
+
+    # This flag create a ClusterRoleBinding object instead of RoleBindings
+    clusterScoped: true
+
+    # (Optional)
+    # Target namespaces can be matched by exact name,
+    # by their labels, or a Golang regular expression.
+    # Attention: Only one can be performed.
+    namespaceSelector:
+
+      # Select those ServiceAccounts in namespaces different from: kube-system, kube-public or default
+      matchRegex:
+        negative: false
+        expression: "^(application-.+)$"

@@ -1,0 +1,3 @@
+# Ref: https://github.com/prosimcorp/helm-charts/blob/main/charts/kuberbac/values.yaml
+
+kuberbac: {}
