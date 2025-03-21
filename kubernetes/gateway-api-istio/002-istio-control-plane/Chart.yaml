@@ -1,0 +1,10 @@
+apiVersion: v2
+name: meta-istio-discovery
+description: A Helm chart for deploying Istio Discovery on Kubernetes
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: istiod
+    version: 1.25.0
+    repository: https://istio-release.storage.googleapis.com/charts

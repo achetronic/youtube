@@ -1,0 +1,10 @@
+apiVersion: v2
+name: meta-istio-base
+description: A Helm chart for deploying Istio base CRDs on Kubernetes
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: base
+    version: 1.25.0
+    repository: https://istio-release.storage.googleapis.com/charts

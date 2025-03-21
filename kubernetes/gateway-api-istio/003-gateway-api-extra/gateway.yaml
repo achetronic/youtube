@@ -1,0 +1,62 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: production
+  namespace: istio-system
+spec:
+
+  # A standalone Envoy deployment can be used to gain fine control over the
+  # resources, disruption policies, etc.
+  #addresses:
+  #  - type: Hostname
+  #    value: istio-extra-gateway-stable-standalone-internal.istio.svc.cluster.local
+
+  gatewayClassName: istio-production
+  listeners:
+
+    ##########################################
+    ## HTTP endpoint with NO SECURITY
+    ##########################################
+    - allowedRoutes:
+        namespaces:
+          from: All
+      name: http
+      port: 80
+      protocol: HTTP
+
+    ##########################################
+    ## HTTPS endpoint with TLS termination
+    ##########################################
+
+    #- allowedRoutes:
+    #    namespaces:
+    #      from: All
+    #  hostname: '*.example.com'
+    #  name: https
+    #  port: 443
+    #  protocol: HTTPS
+    #  tls:
+    #    certificateRefs:
+    #      - group: ""
+    #        kind: Secret
+    #        name: example-entrance-tls
+    #    mode: Terminate
+
+    ##########################################
+    ## HTTPS endpoint with mTLS
+    ##########################################
+
+    #- allowedRoutes:
+    #    namespaces:
+    #      from: All
+    #  name: https-mtls
+    #  port: 8443
+    #  protocol: HTTPS
+    #  tls:
+    #    certificateRefs:
+    #      - group: ""
+    #        kind: Secret
+    #        name: https-mtls
+    #    mode: Terminate
+    #    options:
+    #      gateway.istio.io/tls-terminate-mode: MUTUAL

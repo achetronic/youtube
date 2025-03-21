@@ -1,0 +1,8 @@
+# Ref: https://github.com/istio/istio/blob/master/manifests/charts/base/values.yaml
+base:
+  global:
+    istioNamespace: istio-system
+
+  base:
+    # Avoid treating CRDs as part of Helm template phase
+    enableCRDTemplates: false
