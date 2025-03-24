@@ -4,14 +4,16 @@ metadata:
   name: route-redirect-to-https
   namespace: application
 spec:
-  hostnames:
-    - application.example.com
   parentRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: istio-production
+      name: production
       namespace: istio-system
       sectionName: http
+
+  hostnames:
+    - example.com
+
   rules:
     - filters:
         - requestRedirect:

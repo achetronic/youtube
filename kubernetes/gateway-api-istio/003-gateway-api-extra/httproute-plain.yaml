@@ -4,19 +4,24 @@ metadata:
   name: route
   namespace: application
 spec:
-  hostnames:
-    - application.example.com
+
   parentRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: istio-production
+      name: production
       namespace: istio-system
       sectionName: http
+
+
+  hostnames:
+    - example.com
+
   rules:
+
     - backendRefs:
         - group: ""
           kind: Service
-          name: application
+          name: your-application
           namespace: application
           port: 8080
           weight: 1

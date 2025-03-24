@@ -9,9 +9,9 @@ spec:
   # resources, disruption policies, etc.
   #addresses:
   #  - type: Hostname
-  #    value: istio-extra-gateway-stable-standalone-internal.istio.svc.cluster.local
+  #    value: istio-standalone.istio-system.svc.cluster.local
 
-  gatewayClassName: istio-production
+  gatewayClassName: istio
   listeners:
 
     ##########################################
@@ -20,6 +20,7 @@ spec:
     - allowedRoutes:
         namespaces:
           from: All
+      hostname: example.com
       name: http
       port: 80
       protocol: HTTP
