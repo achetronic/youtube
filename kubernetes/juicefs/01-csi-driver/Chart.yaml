@@ -1,0 +1,7 @@
+apiVersion: v2
+name: meta-juicefs-csi-driver
+version: 0.1.0
+dependencies:
+  - name: juicefs-csi-driver
+    version: 0.23.1
+    repository: https://juicedata.github.io/charts/

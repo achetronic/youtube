@@ -1,0 +1,74 @@
+# Ref: https://github.com/bitnami/charts/blob/main/bitnami/redis-cluster/values.yaml
+# Ref: https://juicefs.com/docs/community/redis_best_practices
+
+redis-cluster:
+
+  # Guarantee some availability during rotation
+  pdb:
+    create: true
+    minAvailable: 50%
+
+  # Use password authentication
+  usePassword: true
+
+  # Redis password (ignored if existingSecret set)
+  # Defaults to a random 10-character alphanumeric string if not set and usePassword is true
+  #password: ""
+
+  existingSecret: metadata-redis-cluster
+  existingSecretPasswordKey: redis-password
+
+  # Enable persistence using Persistent Volume Claims
+  persistence:
+    enabled: true
+
+    storageClass: ""
+    size: 20Gi
+
+  # 'whenScaled' Volume retention behavior when the replica count of the StatefulSet is reduced
+  # 'whenDeleted' Volume retention behavior that applies when the StatefulSet is deleted
+  persistentVolumeClaimRetentionPolicy:
+    enabled: false
+    whenScaled: Retain
+    whenDeleted: Retain
+
+  redis:
+    resourcesPreset: "xlarge"
+    # resources: {}
+
+
+  # Steps for scaling-up the cluster after first installation:
+  # 1. Set 'init' to false
+  # 1. Set 'update.currentNumberOfNodes' and 'update.currentNumberOfReplicas' to current actual values
+  # 2. Set 'nodes' and 'replicas' to desired values
+  # 3. Set 'update.addNodes' to true
+  # 4. Perform a Helm upgrade
+  # 5. Set 'update.addNodes' to false again
+
+  # Steps for scaling-down the cluster after first installation:
+  # 1. Set 'init' to false
+  # 2. Set 'nodes' and 'replicas' to desired values
+  # 3. Set 'update.addNodes' to false
+  # 4. Perform a Helm upgrade
+
+  cluster:
+    # Set this to false only after first installation
+    # init: false
+
+    # The number of master nodes should always be >= 3, otherwise cluster creation will fail
+    nodes: 6
+
+    # Number of replicas for every master in the cluster
+    # Take care with this. Use the following example:
+    # 6 nodes w/ 1 replicas = 3 master + 3 replica
+    # 3 nodes w/ 0 replicas = 3 master + 0 replica
+    replicas: 1
+
+    # This section allows to update the Redis cluster nodes.
+    update:
+      # Setting this to true a hook will add nodes to the Redis cluster after the upgrade.
+      # Enable it when the operation is actually needed
+      addNodes: false
+
+      currentNumberOfNodes: 9
+      currentNumberOfReplicas: 2

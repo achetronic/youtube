@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: application
+  template:
+    metadata:
+      labels:
+        app: application
+    spec:
+      containers:
+        - name: app
+          image: nginx:stable
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: application-storage
+              mountPath: /usr/share/nginx/html
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "echo 'Prueba JuiceFS - Pod: $HOSTNAME' > /usr/share/nginx/html/index.html"]
+      volumes:
+        - name: application-storage
+          persistentVolumeClaim:
+            claimName: application-pvc

@@ -1,0 +1,59 @@
+# Ref: https://github.com/juicedata/charts/blob/main/charts/juicefs-csi-driver/values.yaml
+
+juicefs-csi-driver:
+
+  # The way JuiceFS Client runs. choose between:
+  # - mountpod: default, run JuiceFS Client in an independent pod
+  # - sidecar: run JuiceFS Client as a sidecar container in the same pod with application
+  # - process: run JuiceFS Client as a process in the JuiceFS CSI node service
+  # - serverless: a special "sidecar" mode that requires no privilege, creates no hostPath volumes, to allow full serverless deployment
+  # Ref: https://juicefs.com/docs/csi/introduction/
+  mountMode: mountpod
+
+  # Specifies whether JuiceFS is being deployed in an immutable Kubernetes environment.
+  # Immutable environments, such as Talos Linux, have read-only paths in the host filesystem.
+  immutable: false
+
+  # CSI Dashboard helps with CSI Driver observation, enabled by default
+  dashboard:
+    enabled: true
+
+    # Basic auth for dashboard
+    auth:
+      enabled: false
+
+      # Set existingSecret to indicate whether to use an existing secret.
+      # If it is empty, a corresponding secret will be created according to the plain text configuration.
+      existingSecret: ""
+      username: admin
+      password: admin
+
+  # For production environment, manually create & manage storageClass outside Helm is recommended, ref: https://juicefs.com/docs/csi/guide/pv#create-storage-class
+  storageClasses:
+    - name: "juicefs-primary"
+      enabled: true
+
+      # Set existingSecret to indicate whether to use an existing secret.
+      # If it is empty, a corresponding secret will be created according to the plain text configuration.
+      existingSecret: juicefs-credentials
+
+      # Additional annotations for this StorageClass, e.g. make it default
+      # annotations:
+      #   storageclass.kubernetes.io/is-default-class: "true"
+
+      # Customize PV directory format, ref: https://juicefs.com/docs/csi/guide/pv#using-path-pattern
+      pathPattern: "${.PVC.namespace}-${.PVC.name}"
+
+      mountPod:
+        # Mount pod resource requests & limits
+        resources:
+          limits:
+            cpu: 5000m
+            memory: 5Gi
+          requests:
+            cpu: 1000m
+            memory: 1Gi
+        # Override mount pod image, ref: https://juicefs.com/docs/csi/guide/custom-image
+        image: ""
+        # Set annotations for the mount pod
+        annotations: {}
